@@ -59,7 +59,7 @@ public class EditScreen implements Screen,InputProcessor {
 		mouseposition = new Vector2(0,0);
 		
 		Skin ui = new Skin(Gdx.files.internal("uiskin.json"));
-		textfield = new TextField(" ", ui);
+		textfield = new TextField("", ui);
 		button = new TextButton("Ok.", ui);
 		
 		button.addListener(new ChangeListener(){

@@ -3,6 +3,7 @@ package main;
 import game.Board;
 import game.GameState;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -34,9 +35,8 @@ public class TombEscapeGame extends Game {
 	@Override
 	public void create () {
 		game = this;
-		levels.add("Level");
-		levels.add("Cica");
-		levels.add("Level 3");
+		levels.add("New Level");
+		levels.add("Level 4");
 		
 		boardscreen = new BoardScreen();
 		menuscreen = new MenuScreen();
@@ -109,8 +109,9 @@ public class TombEscapeGame extends Game {
 	}
 
 	public static Board loadBoard(String name) throws IOException, ClassNotFoundException{
-		System.out.println("Loading maps\\" + name +".tomb");
-		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("maps\\" + name +".tomb"));
+		String path = "." + File.separator + "maps" + File.separator + name + ".tomb";
+		System.out.println("Loading: " + path);
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
 		Board b =(Board) ois.readObject();
 		ois.close();
 		System.out.println("Activating entitties.");
@@ -120,8 +121,9 @@ public class TombEscapeGame extends Game {
 	}
 	
 	public static void saveBoard(Board board) throws FileNotFoundException, IOException{
-		System.out.println("Saving: maps\\" + board.name + ".tomb");
-		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("maps\\" + board.name + ".tomb"));
+		String path = "." + File.separator + "maps" + File.separator + board.name + ".tomb";
+		System.out.println("Saving: " + path);
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path));
 		oos.writeObject(board);
 		oos.close();
 		System.out.println("Board saved at: " + board.name + ".tomb");
