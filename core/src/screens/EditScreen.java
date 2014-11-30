@@ -10,6 +10,7 @@ import game.entities.Escaper;
 import game.entities.FinishPoint;
 import game.entities.Spinner;
 import game.entities.StartPoint;
+import game.entities.Teleporter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -42,8 +43,9 @@ public class EditScreen implements Screen,InputProcessor {
 	Vector2 mouseposition;
 	
 	Vector2 spinnerstart;
+	Vector2 portstart;
 	boolean spinnerplacing;
-	
+	boolean portplacing;
 	boolean saving;
 	
 	Stage stage;
@@ -56,6 +58,7 @@ public class EditScreen implements Screen,InputProcessor {
 		cam = new GameCamera();
 		
 		spinnerplacing = false;
+		portplacing = false;
 		mouseposition = new Vector2(0,0);
 		
 		Skin ui = new Skin(Gdx.files.internal("uiskin.json"));
@@ -109,6 +112,18 @@ public class EditScreen implements Screen,InputProcessor {
 			drawer.spinner.draw(drawer.batch);
 			drawer.batch.end();
 			drawer.spinner.setAlpha(1);
+		}
+		if (portplacing){
+			float off = - drawer.teleporter_sprite.getHeight()/2;
+			drawer.batch.begin();
+			drawer.teleporter_sprite.setPosition(portstart.x + off, portstart.y + off);
+			drawer.teleporter_sprite.setAlpha(0.7f);
+			drawer.teleporter_sprite.draw(drawer.batch);
+			drawer.teleporter_sprite.setPosition(mouseposition.x + off, mouseposition.y + off);
+			drawer.teleporter_sprite.setAlpha(0.5f);
+			drawer.teleporter_sprite.draw(drawer.batch);
+			drawer.batch.end();
+			drawer.teleporter_sprite.setAlpha(1);
 		}
 		if(saving){
 			stage.draw();
@@ -194,6 +209,10 @@ public class EditScreen implements Screen,InputProcessor {
 		}else if(character == 'r' && !spinnerplacing){
 			spinnerplacing = true;
 			spinnerstart = new Vector2( mouseposition.x, mouseposition.y);
+		}else if(character == 't' && !portplacing){
+			Vector2 pos = board.getGameTile(Globals.getIndex(mouseposition)).pos.getGamePos().add(new Vector2(Globals.TILE_SIZE/2, Globals.TILE_SIZE/2));
+			portplacing = true;
+			portstart = pos;
 		}else if(character == 's'){
 			if(board.finishPoint != null && board.escaper!= null && board.startPoint != null){
 				saving = true;
@@ -209,13 +228,16 @@ public class EditScreen implements Screen,InputProcessor {
 		cam.unproject(ordPos);
 		Vector2 pos = new Vector2(ordPos.x,ordPos.y);
 		if(button == Buttons.LEFT){
-			if (!spinnerplacing){
+			if (spinnerplacing){
+				board.spinners.add(new Spinner(spinnerstart, pos));
+				spinnerplacing = false;
+			}else if(portplacing) {
+				pos = board.getGameTile(Globals.getIndex(pos)).pos.getGamePos().add(new Vector2(Globals.TILE_SIZE/2, Globals.TILE_SIZE/2));
+				board.ports.add(new Teleporter(portstart, pos));
+				portplacing = false;
+			}else{
 				Tile t = board.getGameTile(Globals.getIndex(pos));
 				t.type = t.type == (TileType.UNWALKABLE) ? TileType.WALKABLE : TileType.UNWALKABLE; 
-			
-			}else{
-			board.spinners.add(new Spinner(spinnerstart, pos));
-			spinnerplacing = false;
 			}
 		}
 		return false;
