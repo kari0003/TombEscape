@@ -22,6 +22,6 @@ public class Index implements Serializable{
 	
 	//Pivot point of the Vector is not in the middle yet
 	public Vector2 getGamePos(){
-		return new Vector2(x*Globals.TILE_SIZE, y*Globals.TILE_SIZE);
+		return new Vector2(x * Globals.TILE_SIZE, y * Globals.TILE_SIZE);
 	}
 }

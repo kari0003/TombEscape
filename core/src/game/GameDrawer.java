@@ -1,10 +1,5 @@
 package game;
 
-import game.Board;
-import game.Globals;
-import game.Tile;
-import game.TileType;
-import game.entities.Entity;
 import game.entities.Escaper;
 import game.entities.FinishPoint;
 import game.entities.Spinner;
@@ -12,6 +7,7 @@ import game.entities.Spinner;
 import javax.swing.JFrame;
 
 import main.TombEscapeGame;
+import screens.BoardScreen;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -20,28 +16,38 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
-import com.sun.prism.GraphicsPipeline.ShaderType;
 
 public class GameDrawer{
 	JFrame frame;
-	SpriteBatch batch;
+	public SpriteBatch batch;
 	
-	Texture unwalkable_tile;
-	Texture walkable_tile;
-	Texture finishpaint;
+	Sprite unwalkable_tile;
+	Sprite walkable_tile;
+	Sprite finishpaint;
 	Sprite rallypoint;
 	Sprite escaper;
-	Sprite spinner;
+	public Sprite spinner;
+	public Vector2 tileoffset;
+	
 	
 	public GameDrawer(){
 		batch = new SpriteBatch();
 		
-		unwalkable_tile = new Texture("lava.png");
-		walkable_tile = new Texture("bricks.png");
-		finishpaint = new Texture("finishpoint.png");
+		unwalkable_tile = new Sprite(new Texture("lava.png"));
+		walkable_tile = new Sprite(new Texture("bricks.png"));
+		finishpaint = new Sprite(new Texture("finishpoint.png"));		
 		escaper = new Sprite(new Texture("escaper.png"));
 		spinner = new Sprite(new Texture("blades.png"));
 		rallypoint = new Sprite(new Texture("blades.png"));
+		
+		unwalkable_tile.setBounds(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
+		walkable_tile.setBounds(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
+		finishpaint.setBounds(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
+		spinner.setBounds(0, 0, Globals.SPINNER_SIZE*2, Globals.SPINNER_SIZE*2);
+		spinner.setOrigin(Globals.SPINNER_SIZE, Globals.SPINNER_SIZE);
+
+		escaper.setBounds(0, 0, Globals.EXPLORER_SIZE*2 + 8, Globals.EXPLORER_SIZE*2 + 8);
+		escaper.setOrigin(Globals.EXPLORER_SIZE + 4, Globals.EXPLORER_SIZE + 4);
 	}
 	
 	public void render(){
@@ -57,13 +63,16 @@ public class GameDrawer{
 			batch.begin();
 			Board board = TombEscapeGame.getActiveBoard();
 			drawBoard( board);
-			drawFinish(board.finishPoint);
+			if(board.finishPoint != null){
+				drawFinish(board.finishPoint);
+			}
 			System.out.println("GameDrawer - drawSpinner-s");
 			for (Spinner spinner : board.spinners) {
 				drawSpinner(spinner);
 			}
-			
-			drawEscaper( board.escaper);
+			if(board.escaper != null){
+				drawEscaper( board.escaper);		
+			}
 			batch.end();
 			
 		}
@@ -82,11 +91,13 @@ public class GameDrawer{
 	public void drawTile(Tile t){
 		if(t.type == TileType.UNWALKABLE){
 			Vector2 pos = t.pos.getGamePos();
-			batch.draw(unwalkable_tile, pos.x, pos.y);
+			unwalkable_tile.setPosition(pos.x, pos.y);
+			unwalkable_tile.draw(batch);
 		}
 		if(t.type == TileType.WALKABLE){
 			Vector2 pos = t.pos.getGamePos();
-			batch.draw(walkable_tile, pos.x, pos.y);
+			walkable_tile.setPosition(pos.x, pos.y);
+			walkable_tile.draw(batch);
 		}
 	}
 	
@@ -94,7 +105,7 @@ public class GameDrawer{
 	
 	public void drawEscaper( Escaper e ){
 		batch.end();
-		sr.setProjectionMatrix(TombEscapeGame.cam.combined);
+		sr.setProjectionMatrix(BoardScreen.cam.combined);
 		sr.begin(ShapeType.Line);
 		sr.setColor(1,1,0,0.5f);
 		sr.circle(e.pos.x, e.pos.y, Globals.EXPLORER_SIZE);
@@ -112,12 +123,12 @@ public class GameDrawer{
 	}
 
 	private void drawSpinner(Spinner s) {
-		spinner.setScale(0.6f);
+		//spinner.setScale(0.4f);
 		float offset = - spinner.getHeight()/2;
 		spinner.setRotation( s.facing );
 		spinner.setPosition( s.pos.x + offset,s.pos.y + offset );
 		batch.end();
-			sr.setProjectionMatrix(TombEscapeGame.cam.combined);
+			sr.setProjectionMatrix(BoardScreen.cam.combined);
 			sr.begin(ShapeType.Line);
 			sr.setColor(1,0,0,0.5f);
 			sr.circle(s.pos.x, s.pos.y, s.getSize());
@@ -128,7 +139,9 @@ public class GameDrawer{
 	
 	private void drawFinish(FinishPoint f) {
 		System.out.println("GameDrawer - drawfinishPoint");
-		batch.draw(finishpaint, f.pos.x - Globals.TILE_SIZE/2, f.pos.y - Globals.TILE_SIZE/2);
+		Vector2 pos = new Vector2(f.pos.x - Globals.TILE_SIZE/2, f.pos.y - Globals.TILE_SIZE/2);
+		finishpaint.setPosition(pos.x,pos.y);
+		finishpaint.draw(batch);
 	}
 
 }

@@ -3,9 +3,9 @@ package game;
 import com.badlogic.gdx.math.Vector2;
 
 public class Globals {
-	public static int TILE_SIZE = 64;
+	public static int TILE_SIZE = 40;
 	
-	public static int BOARD_SIZE = 10;
+	public static int BOARD_SIZE = 16;
 	
 	public static int ANIMATION_COUNT = 60; // Per second
 	public static double ANIMATION_TIME = (1/ANIMATION_COUNT);

@@ -36,24 +36,24 @@ public class Board implements java.io.Serializable{
 	public Board(){
 		for (int i = 0; i < Globals.BOARD_SIZE; i++) {
 			for(int j = 0; j < Globals.BOARD_SIZE; j++){
-				if(pattern[i][j] == 1){
-					tiles[i][j] = new Tile(new Index(i,j), TileType.WALKABLE);
-					System.out.println("Creating Walkable");
-				}else{
+//				if(pattern[i][j] == 1){
+//					tiles[i][j] = new Tile(new Index(i,j), TileType.WALKABLE);
+//					System.out.println("Creating Walkable");
+//				}else{
 					tiles[i][j] = new Tile(new Index(i,j), TileType.UNWALKABLE);
-				}
+//				}
 			}
 			
 		}
-		name = "Level2";
-		startPoint = new StartPoint(tiles[4][1].pos.getGamePos().add(new Vector2(Globals.TILE_SIZE/2,Globals.TILE_SIZE/2)));
+		name = "New Level";
+	/*	startPoint = new StartPoint(tiles[4][1].pos.getGamePos().add(new Vector2(Globals.TILE_SIZE/2,Globals.TILE_SIZE/2)));
 		escaper = new Escaper(startPoint.pos);
 		
 		spinners.add(new Spinner( tiles[3][6].pos.getGamePos()
 				, tiles[6][6].pos.getGamePos() ));
 
 		finishPoint = new FinishPoint(tiles[6][8].pos.getGamePos().add(new Vector2(Globals.TILE_SIZE/2,Globals.TILE_SIZE/2)));
-		
+		*/
 	}
 	
 	public Tile getGameTile(Index i){
@@ -68,9 +68,15 @@ public class Board implements java.io.Serializable{
 	}
 
 	public void activateEntities(){
-		Entity.addEntity(escaper);
-		Entity.addEntity(startPoint);
-		Entity.addEntity(finishPoint);
+		if(escaper != null){
+			Entity.addEntity(escaper);
+		}
+		if(startPoint != null){
+			Entity.addEntity(startPoint);
+		}
+		if(finishPoint != null){
+			Entity.addEntity(finishPoint);
+		}
 		for (Spinner s : spinners) {
 			Entity.addEntity(s);
 		}
@@ -78,18 +84,19 @@ public class Board implements java.io.Serializable{
 	}
 
 	public void deactivate() {
-		Entity.removeEntity(escaper);
-		Entity.removeEntity(startPoint);
-		Entity.removeEntity(finishPoint);
+		if(escaper != null){
+			Entity.removeEntity(escaper);
+		}
+		if(startPoint!= null){
+			Entity.removeEntity(startPoint);
+		}
+		if(finishPoint != null){
+			Entity.removeEntity(finishPoint);
+		}
 		for (Spinner s : spinners) {
 			Entity.removeEntity(s);
 		}
-	/*	escaper = null;
-		startPoint = null;
-		finishPoint = null;
-		spinners = null;
-	*/
 		System.out.println("Deactivated board.");
-		}
+	}
 	
 }

@@ -21,7 +21,7 @@ public class FinishPoint extends Entity implements Serializable{
 			TombEscapeGame.finishLevel();
 			active = false;
 			dead = true;
-			//Game.pauseGame(true);
+			//TombEscapeGame.pauseGame(true);
 		}
 
 	}

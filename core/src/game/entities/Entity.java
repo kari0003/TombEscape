@@ -27,6 +27,7 @@ public abstract class Entity  implements Serializable{
 		System.out.println("Updating Entities:");
 		for(Iterator<Entity> it = instances.iterator(); it.hasNext();) {
 			Entity e = it.next();
+			System.out.println("Updating an entity.....");
 			if(e.dead) {
 				it.remove();
 			}else {
