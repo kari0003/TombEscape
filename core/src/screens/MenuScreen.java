@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.sun.org.apache.bcel.internal.classfile.Field;
 
 public class MenuScreen implements Screen {
 
@@ -34,10 +35,9 @@ public class MenuScreen implements Screen {
 		edit = new TextButton("Editor",ui);
 		quit = new TextButton("Quit :(",ui);
 		
-		play.addListener(new InputListener(){
-			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
+		play.addListener(new ChangeListener(){
+			public void changed(ChangeEvent event, Actor actor){
 				TombEscapeGame.getGame().startGame();
-				return false;
 			}
 		});
 		
@@ -53,8 +53,7 @@ public class MenuScreen implements Screen {
 			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				//Quit!!
-				System.out.println("QuIT");
+				Gdx.app.exit();
 		    };
 		});
 		

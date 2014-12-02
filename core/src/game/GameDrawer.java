@@ -134,7 +134,7 @@ public class GameDrawer{
 			sr.circle(s.pos.x, s.pos.y, s.getSize());
 		sr.end();
 		batch.begin();
-		spinner.draw(batch);		
+		spinner.draw(batch);
 	}
 	
 	private void drawFinish(FinishPoint f) {

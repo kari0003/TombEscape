@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import java.io.Serializable;
 
 public class Index implements Serializable{
-	int x;
+	private int x;
 	int y;
 	
 	public Index(){
@@ -12,16 +12,24 @@ public class Index implements Serializable{
 	}
 	
 	public Index(int x, int y) {
-		this.x = x;
+		this.setX(x);
 		this.y = y;
 	}
 	
 	public boolean sameAs(Index otherIndex) {
-		return this.x == otherIndex.x && this.y == otherIndex.y;
+		return this.getX() == otherIndex.getX() && this.y == otherIndex.y;
 	}
 	
 	//Pivot point of the Vector is not in the middle yet
 	public Vector2 getGamePos(){
-		return new Vector2(x * Globals.TILE_SIZE, y * Globals.TILE_SIZE);
+		return new Vector2(getX() * Globals.TILE_SIZE, y * Globals.TILE_SIZE);
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
 	}
 }

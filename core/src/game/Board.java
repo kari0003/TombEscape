@@ -59,10 +59,10 @@ public class Board implements java.io.Serializable{
 	public Tile getGameTile(Index i){
 		
 		Tile tmp = null;
-		if (i.x<0 || i.x >= Globals.BOARD_SIZE || i.y >= Globals.BOARD_SIZE || i.y < 0){
+		if (i.getX()<0 || i.getX() >= Globals.BOARD_SIZE || i.y >= Globals.BOARD_SIZE || i.y < 0){
 			throw new IndexOutOfBoundsException("Board index out of bounds.");
 		}else{
-			tmp = tiles[i.x][i.y];
+			tmp = tiles[i.getX()][i.y];
 		}
 		return tmp;
 	}

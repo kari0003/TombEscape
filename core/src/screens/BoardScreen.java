@@ -2,33 +2,43 @@ package screens;
 
 import game.GameCamera;
 import game.GameDrawer;
-import game.GameState;
 import game.entities.Entity;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import main.TombEscapeGame;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class BoardScreen implements Screen, InputProcessor{
 //etc, copy from TEGame the needed parts, then set the screen in TEGame
 
 	GameDrawer drawer;
+	public boolean won;
 	public static GameCamera cam;
 	
+	Stage stage;
+	
 	public BoardScreen(){
+		won = false;
 		
 		cam = new GameCamera();
 		drawer = new GameDrawer();
+		
+		stage = new Stage();
+		
+		Table t = new Table();
+		t.setFillParent(true);
+		t.add(new Label("You have won the game!! press Esc to go back to menu.", new Skin(Gdx.files.internal("uiskin.json"))));
+		stage.addActor(t);
 	}
 	
 	@Override
@@ -36,11 +46,14 @@ public class BoardScreen implements Screen, InputProcessor{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		drawer.batch.setProjectionMatrix(cam.combined);
 		drawer.render();
-		cam.update();
 		System.out.println("Drawer:render");
 		if(!TombEscapeGame.paused){
 			Entity.updateEntities();
 		}
+		if(won){
+			stage.draw();
+		}
+		cam.update();
 	}
 
 	@Override

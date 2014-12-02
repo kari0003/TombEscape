@@ -35,9 +35,9 @@ public class TombEscapeGame extends Game {
 	@Override
 	public void create () {
 		game = this;
-		levels.add("New Level");
+		/*levels.add("New Level");
 		levels.add("Level 4");
-		
+		*/
 		boardscreen = new BoardScreen();
 		menuscreen = new MenuScreen();
 		editscreen = new EditScreen();
@@ -72,8 +72,22 @@ public class TombEscapeGame extends Game {
 	public void startGame() {
 		level = 0;
 		state = GameState.GAME;
+		boardscreen.won = false;
 		try {
-			activeBoard = loadBoard(levels.get(level));
+			levels.clear();
+			File maps = new File("." + File.separator + "maps");
+			String[] maplist= maps.list();
+			for(String s : maplist){
+				if(s.contains(".tomb")){
+					String name = s.substring(0,s.length()-5);
+					levels.add(name);
+					System.out.println(name);
+				}
+			}
+			if(levels.size() != 0){
+				activeBoard = loadBoard(levels.get(level));
+				setScreen(boardscreen);
+			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -82,7 +96,6 @@ public class TombEscapeGame extends Game {
 			e.printStackTrace();
 		}
 
-		setScreen(boardscreen);
 		
 	}
 	
@@ -94,7 +107,9 @@ public class TombEscapeGame extends Game {
 			loadMe = levels.get(level);
 			System.out.println("Loaded map. - " + getActiveBoard().name);
 		}else{
-			System.out.println("YOU HAVE WON THE GAME PRICK!!!!!!!!!!!!!!");
+			boardscreen.won = true;
+			activeBoard.finished = true;
+			//System.out.println("YOU HAVE WON THE GAME PRICK!!!!!!!!!!!!!!");
 		}
 	}
 
@@ -105,7 +120,6 @@ public class TombEscapeGame extends Game {
 		editscreen.setBoard(editable);
 		setScreen(editscreen);
 		activeBoard = editable;
-		
 	}
 
 	public static Board loadBoard(String name) throws IOException, ClassNotFoundException{
