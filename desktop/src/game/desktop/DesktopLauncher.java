@@ -13,6 +13,7 @@ public class DesktopLauncher {
 	    config.width = 640;
 	    config.height = 640;
 	    config.resizable = false;
+	    config.vSyncEnabled = true;
 	    game =new TombEscapeGame();
 		new LwjglApplication(game, config);
 	}

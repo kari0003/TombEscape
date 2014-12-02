@@ -35,9 +35,7 @@ public class TombEscapeGame extends Game {
 	@Override
 	public void create () {
 		game = this;
-		/*levels.add("New Level");
-		levels.add("Level 4");
-		*/
+		
 		boardscreen = new BoardScreen();
 		menuscreen = new MenuScreen();
 		editscreen = new EditScreen();

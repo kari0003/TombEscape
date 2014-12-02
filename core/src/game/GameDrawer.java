@@ -3,6 +3,7 @@ package game;
 import game.entities.Escaper;
 import game.entities.FinishPoint;
 import game.entities.Spinner;
+import game.entities.Teleporter;
 
 import javax.swing.JFrame;
 
@@ -24,6 +25,7 @@ public class GameDrawer{
 	Sprite unwalkable_tile;
 	Sprite walkable_tile;
 	Sprite finishpaint;
+	public Sprite teleporter_sprite;
 	Sprite rallypoint;
 	Sprite escaper;
 	public Sprite spinner;
@@ -35,7 +37,8 @@ public class GameDrawer{
 		
 		unwalkable_tile = new Sprite(new Texture("lava.png"));
 		walkable_tile = new Sprite(new Texture("bricks.png"));
-		finishpaint = new Sprite(new Texture("finishpoint.png"));		
+		finishpaint = new Sprite(new Texture("finishpoint.png"));
+		teleporter_sprite = new Sprite(new Texture("teleporter.png"));
 		escaper = new Sprite(new Texture("escaper.png"));
 		spinner = new Sprite(new Texture("blades.png"));
 		rallypoint = new Sprite(new Texture("blades.png"));
@@ -43,6 +46,7 @@ public class GameDrawer{
 		unwalkable_tile.setBounds(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
 		walkable_tile.setBounds(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
 		finishpaint.setBounds(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
+		teleporter_sprite.setBounds(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
 		spinner.setBounds(0, 0, Globals.SPINNER_SIZE*2, Globals.SPINNER_SIZE*2);
 		spinner.setOrigin(Globals.SPINNER_SIZE, Globals.SPINNER_SIZE);
 
@@ -69,6 +73,11 @@ public class GameDrawer{
 			System.out.println("GameDrawer - drawSpinner-s");
 			for (Spinner spinner : board.spinners) {
 				drawSpinner(spinner);
+			}
+			if(board.ports != null) {
+				for (Teleporter t : board.ports) {
+					drawTeleporter(t);
+				}
 			}
 			if(board.escaper != null){
 				drawEscaper( board.escaper);		
@@ -142,6 +151,13 @@ public class GameDrawer{
 		Vector2 pos = new Vector2(f.pos.x - Globals.TILE_SIZE/2, f.pos.y - Globals.TILE_SIZE/2);
 		finishpaint.setPosition(pos.x,pos.y);
 		finishpaint.draw(batch);
+	}
+	
+	private void drawTeleporter(Teleporter t) {
+		System.out.println("GameDrawer - drawPort");
+		Vector2 pos = new Vector2(t.pos.x - Globals.TILE_SIZE/2, t.pos.y - Globals.TILE_SIZE/2);
+		teleporter_sprite.setPosition(pos.x,pos.y);
+		teleporter_sprite.draw(batch);
 	}
 
 }

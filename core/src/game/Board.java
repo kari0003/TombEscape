@@ -5,6 +5,7 @@ import game.entities.Escaper;
 import game.entities.FinishPoint;
 import game.entities.Spinner;
 import game.entities.StartPoint;
+import game.entities.Teleporter;
 
 import java.util.LinkedList;
 
@@ -14,12 +15,14 @@ import com.badlogic.gdx.utils.Json.Serializable;
 import com.badlogic.gdx.utils.JsonValue;
 
 public class Board implements java.io.Serializable{
+	private static final long serialVersionUID = -404216002267032901L;
 	public String name;
 	public Tile[][] tiles = new Tile[Globals.BOARD_SIZE][Globals.BOARD_SIZE];
 	public Escaper escaper;
 	public boolean finished = false;
 	public StartPoint startPoint;
 	public LinkedList<Spinner> spinners = new LinkedList<Spinner>();
+	public LinkedList<Teleporter> ports = new LinkedList<Teleporter>();
 	public FinishPoint finishPoint;
 	
 	static private int[][] pattern = {{0,0,0,0,0,0,0,0,0,0},
@@ -96,6 +99,9 @@ public class Board implements java.io.Serializable{
 		for (Spinner s : spinners) {
 			Entity.removeEntity(s);
 		}
+		//for (Teleporter t : ports) {
+		//	Entity.removeEntity(t);
+		//}
 		System.out.println("Deactivated board.");
 	}
 	
