@@ -25,17 +25,6 @@ public class Board implements java.io.Serializable{
 	public LinkedList<Teleporter> ports = new LinkedList<Teleporter>();
 	public FinishPoint finishPoint;
 	
-	static private int[][] pattern = {{0,0,0,0,0,0,0,0,0,0},
-									  {0,0,0,0,0,0,0,0,0,0},
-									  {0,0,0,0,0,0,0,0,0,0},
-									  {0,0,0,1,1,1,1,0,0,0},
-									  {0,1,1,1,0,1,1,0,0,0},
-									  {0,0,0,0,0,1,1,0,0,0},
-									  {0,0,0,0,0,1,1,1,1,0},
-									  {0,0,0,0,0,0,0,0,0,0},
-									  {0,0,0,0,0,0,0,0,0,0},
-									  {0,0,0,0,0,0,0,0,0,0}};
-	
 	public Board(){
 		for (int i = 0; i < Globals.BOARD_SIZE; i++) {
 			for(int j = 0; j < Globals.BOARD_SIZE; j++){
@@ -49,14 +38,7 @@ public class Board implements java.io.Serializable{
 			
 		}
 		name = "New Level";
-	/*	startPoint = new StartPoint(tiles[4][1].pos.getGamePos().add(new Vector2(Globals.TILE_SIZE/2,Globals.TILE_SIZE/2)));
-		escaper = new Escaper(startPoint.pos);
-		
-		spinners.add(new Spinner( tiles[3][6].pos.getGamePos()
-				, tiles[6][6].pos.getGamePos() ));
 
-		finishPoint = new FinishPoint(tiles[6][8].pos.getGamePos().add(new Vector2(Globals.TILE_SIZE/2,Globals.TILE_SIZE/2)));
-		*/
 	}
 	
 	public Tile getGameTile(Index i){
@@ -99,9 +81,9 @@ public class Board implements java.io.Serializable{
 		for (Spinner s : spinners) {
 			Entity.removeEntity(s);
 		}
-		//for (Teleporter t : ports) {
-		//	Entity.removeEntity(t);
-		//}
+		for (Teleporter t : ports) {
+			Entity.removeEntity(t);
+		}
 		System.out.println("Deactivated board.");
 	}
 	
