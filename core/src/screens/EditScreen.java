@@ -49,8 +49,11 @@ public class EditScreen implements Screen,InputProcessor {
 	boolean saving;
 	
 	Stage stage;
+	Table table;
 	TextField textfield;
 	TextButton button;
+	
+	Label hint;
 	
 	public EditScreen(){
 		drawer = new GameDrawer();
@@ -77,14 +80,18 @@ public class EditScreen implements Screen,InputProcessor {
 			
 		});
 		
-		stage = new Stage();
-		Table t = new Table();
+		hint = new Label("Place:\nClick - Tile\nE - Escaper\nF - Finish\nR - Blade\nT - Teleporter\nS - Save\nESC - Quit", ui);
+		hint.setWrap(true);
 		
-		t.add(new Label("Map name: ", ui));
-		t.setFillParent(true);
-		t.add(textfield).row();
-		t.add(button);
-		stage.addActor(t);
+		stage = new Stage();
+		table = new Table();
+		
+		table.add(new Label("Map name: ", ui));
+		table.setFillParent(true);
+		table.add(textfield).row();
+		table.add(button);
+		stage.addActor(table);
+		stage.addActor(hint);
 	}
 	
 	public void setBoard(Board b){
@@ -125,9 +132,11 @@ public class EditScreen implements Screen,InputProcessor {
 			drawer.batch.end();
 			drawer.teleporter_sprite.setAlpha(1);
 		}
+		table.setVisible(false);
 		if(saving){
-			stage.draw();
+			table.setVisible(true);
 		}
+		stage.draw();
 		
 		cam.update();
 		
@@ -232,7 +241,7 @@ public class EditScreen implements Screen,InputProcessor {
 				board.spinners.add(new Spinner(spinnerstart, pos));
 				spinnerplacing = false;
 			}else if(portplacing) {
-				pos = board.getGameTile(Globals.getIndex(pos)).pos.getGamePos().add(new Vector2(Globals.TILE_SIZE/2, Globals.TILE_SIZE/2));
+				//pos = board.getGameTile(Globals.getIndex(pos)).pos.getGamePos().add(new Vector2(Globals.TILE_SIZE/2, Globals.TILE_SIZE/2));
 				board.ports.add(new Teleporter(portstart, pos));
 				portplacing = false;
 			}else{

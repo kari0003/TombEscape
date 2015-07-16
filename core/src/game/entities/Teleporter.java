@@ -8,7 +8,7 @@ import main.TombEscapeGame;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class Teleporter extends Entity implements Serializable{
+public class Teleporter extends Entity{
 	private Vector2 destination;
 
 	public Teleporter(Vector2 pos, Vector2 dest){
@@ -19,8 +19,11 @@ public class Teleporter extends Entity implements Serializable{
 	
 	@Override
 	public void update(){
-		if( pos.dst(TombEscapeGame.getActiveBoard().escaper.pos) < Globals.CHECKPOINT_SIZE ){
+		float dst = pos.dst(TombEscapeGame.getActiveBoard().escaper.pos) ;
+		if( dst < Globals.CHECKPOINT_SIZE ){
+			System.out.println("ITTVAN");
 			TombEscapeGame.getActiveBoard().escaper.pos = new Vector2(destination);
+			System.out.println("going from " + TombEscapeGame.getActiveBoard().escaper.pos.toString() + " to " + destination);
 			TombEscapeGame.getActiveBoard().escaper.order_dest = new Vector2(destination);
 		}
 

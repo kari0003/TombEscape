@@ -62,8 +62,15 @@ public class Board implements java.io.Serializable{
 		if(finishPoint != null){
 			Entity.addEntity(finishPoint);
 		}
-		for (Spinner s : spinners) {
-			Entity.addEntity(s);
+		if(spinners!= null){
+			for (Spinner s : spinners) {
+				Entity.addEntity(s);
+			}
+		}
+		if(ports!= null){
+			for (Teleporter t : ports){
+				Entity.addEntity(t);
+			}
 		}
 		System.out.println("Activated Board");
 	}
@@ -78,11 +85,15 @@ public class Board implements java.io.Serializable{
 		if(finishPoint != null){
 			Entity.removeEntity(finishPoint);
 		}
-		for (Spinner s : spinners) {
-			Entity.removeEntity(s);
+		if(spinners!= null){
+			for (Spinner s : spinners) {
+				Entity.removeEntity(s);
+			}
 		}
-		for (Teleporter t : ports) {
-			Entity.removeEntity(t);
+		if(ports!= null){
+			for (Teleporter t : ports) {
+				Entity.removeEntity(t);
+			}
 		}
 		System.out.println("Deactivated board.");
 	}
